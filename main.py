@@ -6,4 +6,4 @@ import numpy
 
 
 print(numpy.__version__)
-print("Projet MNIST lancé !")
+print("Projet MNIST lancé ahhahah!")
