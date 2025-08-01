@@ -1,0 +1,19 @@
+# Environnements virtuels créés
+venv311/
+.venv311/
+
+# Cache Python
+__pycache__/
+*.py[cod]
+
+# Fichiers de logs
+*.log
+
+# Données et datasets
+data/
+
+# Dossiers d’IDE
+.vscode/
+
+# Fichiers système
+Thumbs.db
