@@ -4,12 +4,18 @@ Ce dépôt contient les premières étapes d’un projet de classification d’i
 ✅ Jour 1 : Setup et installation
   
   🔧 Installation de Git + création du dépôt local
+  
   🐍 Mise en place d’un environnement virtuel (venv) pour éviter les conflits de dépendances 
+  
   📦 Installation des bibliothèques essentielles :
         numpy
+        
         matplotlib
+        
         torch
+        
         torchvision
+        
   📚 Lecture de la documentation officielle pour comprendre les concepts suivants :
         PyTorch : Tensors, torch.nn, DataLoader
         Torchvision : datasets et transformations
