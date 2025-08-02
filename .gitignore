@@ -20,3 +20,7 @@ Thumbs.db
 
 #Fichier pour mes bilans par semaine 
 *.txt
+
+#Fichiers de modèles sauvegardés
+
+*.pth
