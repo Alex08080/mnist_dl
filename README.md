@@ -1,7 +1,7 @@
 🧠 Projet MNIST — Semaine 1 : Fondations
 Ce dépôt contient les premières étapes d’un projet de classification d’images avec PyTorch, basé sur le dataset MNIST. L’objectif est d’explorer les bases du Deep Learning, de structurer un projet de manière professionnelle, et de suivre sa progression au fil des jours.
 
-✅ Jour 1 : Setup et installation
+✅ **Jour 1 : Setup et installation**
   
   🔧 Installation de Git + création du dépôt local
   
@@ -24,7 +24,7 @@ Ce dépôt contient les premières étapes d’un projet de classification d’i
         
         Matplotlib : visualisation de données
   
-🗃️ Jour 2 : Chargement des données
+🗃️ **Jour 2 : Chargement des données**
 
   📥 Dataset chargé via torchvision.datasets.MNIST avec download=True
   
@@ -54,7 +54,7 @@ Ce dépôt contient les premières étapes d’un projet de classification d’i
         
         modèles sauvegardés (*.pth)
         
-🧠 Jour 3 : Premier classifieur convolutionnel
+🧠 **Jour 3 : Premier classifieur convolutionnel**
 
   🧱 Construction d’un modèle NeuralNet :
   
