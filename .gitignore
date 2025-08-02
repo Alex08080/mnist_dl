@@ -17,3 +17,6 @@ data/
 
 # Fichiers système
 Thumbs.db
+
+#Fichier pour mes bilans par semaine 
+*.txt
