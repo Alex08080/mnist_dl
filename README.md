@@ -95,3 +95,30 @@ Ce dépôt contient les premières étapes d’un projet de classification d’i
         99.31 % avec 3 couches convolutionnelles (20 epochs)
         
   💾 Sauvegarde du modèle avec torch.save()
+  
+## 🧠 Jour 4 : Régression linéaire, MLP et visualisation
+
+### 📈 Régression linéaire simple
+- Implémentation du calcul des logits :  
+  \( z = W \times x + b \)  
+  où \( W \) est la matrice de poids, \( x \) le vecteur d’entrée, et \( b \) le biais.  
+- Interprétation de \( z \) comme un vecteur de scores pour chaque classe (logits).  
+- Initialisation aléatoire des poids et biais, puis prédiction avant entraînement.
+
+### 🧮 Perceptron multicouche (MLP) basique
+- Ajout de la fonction d’activation **softmax** pour convertir les logits en probabilités.  
+- Implémentation de la fonction **cross_entropy** pour mesurer la perte sur la classe cible.  
+- Calcul manuel des gradients, avec mise à jour des poids par descente de gradient.  
+- Explication détaillée du gradient `dz` et du mécanisme `dz[target] -= 1`.
+
+### 🔄 Entraînement “from scratch”
+- Boucle d’entraînement sur plusieurs epochs avec suivi de la loss.  
+- Early stopping manuel lorsque la perte devient suffisamment basse.
+
+### 🧠 Compréhension approfondie de la backpropagation
+- Rôle du produit extérieur \( dz[:, np.newaxis] \times x[np.newaxis, :] \) dans le calcul de \( dW \).  
+- Impact des gradients sur chaque poids en fonction de la classe cible.
+
+### 🧷 Bonus exploratoire : visualisation des poids
+- Reshape de chaque ligne de \( W \) en image 28×28.  
+- Visualisation des “patterns” appris par chaque neurone représentant les chiffres typiques.
