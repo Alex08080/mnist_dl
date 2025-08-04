@@ -60,7 +60,12 @@ for epoch in range(20):
             total += y_batch.size(0)
 
     accuracy = 100 * correct / total
+    if accuracy >= 99.3:
+        print(f"Converged at epoch {epoch}")
+        print(f"🧪 Accuracy sur le test set : {accuracy:.2f}%")
+        break
     print(f"🧪 Accuracy sur le test set : {accuracy:.2f}%")
+    
 
 torch.save(model.state_dict(), 'mnist_cnn.pth')
 
@@ -89,5 +94,4 @@ for idx, (img, pred, label) in enumerate(errors):
 
 plt.tight_layout()
 plt.show()
-
 
