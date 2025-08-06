@@ -81,3 +81,77 @@ Ce dépôt contient les premières étapes d’un projet de classification d’i
 ### 🧷 Bonus exploratoire : visualisation des poids
 - Reshape de chaque ligne de \( W \) en image 28×28.  
 - Visualisation des “patterns” appris par chaque neurone représentant les chiffres typiques.
+
+## ✅ Jour 5 : Optimisation, Réorganisation, Affichage 
+
+---
+
+### 🧪 Expérimentations de modèles
+
+- Création et entraînement de plusieurs variantes de CNN :
+  - [ ] CNN de base sans Dropout ni BatchNorm.
+  - [ ] CNN + Dropout uniquement.
+  - [ ] CNN + BatchNorm uniquement.
+  - [ ] CNN + Dropout + BatchNorm.
+- Utilisation de différents optimizers :
+  - [ ] SGD
+  - [ ] Adam
+  - [ ] RMSprop
+- Mesure des performances pour chaque combinaison (accuracy max, vitesse de convergence).
+
+---
+
+### 📊 Performances observées
+
+| Architecture                | Optimizer | Acc. max | Convergence |
+|-----------------------------|-----------|----------|-------------|
+| CNN                         | SGD       | ~98.8%   | ~15 epochs  |
+| CNN + Dropout               | SGD       | ~99.1%   | ~10 epochs  |
+| CNN + BatchNorm             | SGD       | 99.3%    | 5 epochs    |
+| CNN + Dropout + BatchNorm   | SGD       | **99.36%**| **4 epochs**|
+
+---
+
+### ⚙️ Techniques approfondies
+
+- **Batch Normalization** :
+  - Ajout de `nn.BatchNorm2d` après chaque couche convolutionnelle.
+  - Normalisation des activations pour chaque batch.
+  - Améliore la stabilité et accélère la convergence.
+- **Dropout** :
+  - Ajout de `nn.Dropout(p=0.3)` pour régularisation.
+  - Appliqué après ReLU et dans les couches fully connected.
+- Test de la combinaison BatchNorm + Dropout :
+  - Fonctionne bien si les modules sont bien placés.
+
+---
+
+### 🧠 Compréhensions théoriques
+
+- **BatchNorm** :
+  - Réduit l'effet du covariate shift.
+  - Rend l'entraînement moins sensible aux initialisations.
+  - Permet des taux d'apprentissage plus élevés.
+- **Dropout** :
+  - Réduction du surapprentissage.
+  - Fonctionne comme une régularisation stochastique.
+- **Combinaison** :
+  - Dropout + BatchNorm fonctionne bien mais doit être positionné intelligemment.
+
+---
+
+### 🗃️ Organisation du projet
+
+- Réorganisation du code et des sorties dans une arborescence claire 
+- Nettoyage des fichiers temporaires.
+- Séparation claire des modules : entraînement, visualisation, analyse.
+
+---
+
+### 📈 Visualisation & Analyse
+
+- Sauvegarde automatique des métriques (`loss`, `accuracy`) dans des fichiers `.pkl`.
+- Comparaison visuelle via des courbes matplotlib.
+- Export des figures sous forme d'images `.png`.
+
+---
