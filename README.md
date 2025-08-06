@@ -84,10 +84,7 @@ Ce dépôt contient les premières étapes d’un projet de classification d’i
 
 ## ✅ Jour 5 : Optimisation, Réorganisation, Affichage 
 
----
-
 ### 🧪 Expérimentations de modèles
-
 - Création et entraînement de plusieurs variantes de CNN :
   - [ ] CNN de base sans Dropout ni BatchNorm.
   - [ ] CNN + Dropout uniquement.
@@ -99,7 +96,6 @@ Ce dépôt contient les premières étapes d’un projet de classification d’i
   - [ ] RMSprop
 - Mesure des performances pour chaque combinaison (accuracy max, vitesse de convergence).
 
----
 
 ### 📊 Performances observées
 
@@ -110,10 +106,7 @@ Ce dépôt contient les premières étapes d’un projet de classification d’i
 | CNN + BatchNorm             | SGD       | 99.3%    | 5 epochs    |
 | CNN + Dropout + BatchNorm   | SGD       | **99.36%**| **4 epochs**|
 
----
-
 ### ⚙️ Techniques approfondies
-
 - **Batch Normalization** :
   - Ajout de `nn.BatchNorm2d` après chaque couche convolutionnelle.
   - Normalisation des activations pour chaque batch.
@@ -124,10 +117,8 @@ Ce dépôt contient les premières étapes d’un projet de classification d’i
 - Test de la combinaison BatchNorm + Dropout :
   - Fonctionne bien si les modules sont bien placés.
 
----
 
 ### 🧠 Compréhensions théoriques
-
 - **BatchNorm** :
   - Réduit l'effet du covariate shift.
   - Rend l'entraînement moins sensible aux initialisations.
@@ -138,20 +129,15 @@ Ce dépôt contient les premières étapes d’un projet de classification d’i
 - **Combinaison** :
   - Dropout + BatchNorm fonctionne bien mais doit être positionné intelligemment.
 
----
 
 ### 🗃️ Organisation du projet
-
 - Réorganisation du code et des sorties dans une arborescence claire 
 - Nettoyage des fichiers temporaires.
 - Séparation claire des modules : entraînement, visualisation, analyse.
 
----
 
 ### 📈 Visualisation & Analyse
-
 - Sauvegarde automatique des métriques (`loss`, `accuracy`) dans des fichiers `.pkl`.
 - Comparaison visuelle via des courbes matplotlib.
 - Export des figures sous forme d'images `.png`.
 
----
