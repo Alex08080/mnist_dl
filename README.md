@@ -140,7 +140,52 @@ Ce dépôt contient les premières étapes d’un projet de classification d’i
 - Sauvegarde automatique des métriques (`loss`, `accuracy`) dans des fichiers `.pkl`.
 - Comparaison visuelle via des courbes matplotlib.
 - Export des figures sous forme d'images `.png`.
-<<<<<<< HEAD
 
-=======
->>>>>>> 51888dd (Jour 6)
+## ✅ Jour 6 : Implémentation CNN, Data Augmentation & Checkpointing
+
+### 🧪 Expérimentations réalisées 
+- Ajout de data augmentation simple (rotation, translation, zoom) avec `torchvision.transforms` 
+
+### ⚙️ Techniques abordées  
+- Data augmentation :  
+  - Rotation aléatoire ±15°  
+  - Translation ±15%  
+  - Zoom ±15%  
+- Checkpointing : sauvegarde du modèle et optimiseur lors de la meilleure validation    
+
+### 🧠 Compréhensions théoriques  
+- CNN capture mieux les caractéristiques spatiales que MLP  
+- Data augmentation améliore la robustesse du modèle  
+- Checkpointing facilite reprise entraînement sans perte  
+
+### 🗃️ Organisation du code 
+- `train.py` : script d’entraînement CNN avec data augmentation et checkpointing  
+- Modifications mineures dans le loader MNIST pour intégrer augmentation
+- Refactorisation du code  
+
+### 📈 Visualisation & analyse  
+- Courbes loss/accuracy enregistrées via TensorBoard  
+- Sauvegarde automatique des checkpoints au format `.pt`  
+- Visualisation des filtres convolutifs en sortie
+- Visualisation des filtres convolutifs (poids des couches conv) pour comprendre ce que le réseau apprend  
+- Visualisation des feature maps (activations) après certaines couches convolutionnelles pour observer la détection des caractéristiques
+
+## 💻 Arguments de la CLI `train_cnn.py`
+
+| Argument             | Type      | Description |
+|----------------------|-----------|-------------|
+| `--batch_size`       | int       | Taille du batch (par défaut: 64) |
+| `--epochs`           | int       | Nombre d'époques d'entraînement |
+| `--optmizer`         | str       | Choix de l'optimizer (Sgd, Adam, Rms) |
+| `--save_metrics`     | int       | Sauvegarde ou non les metrics (par défaut : non sauvegardé) |
+| `--save_model`       | int       | Sauvegarde ou non les models (par défaut : non sauvegardé)  |
+
+---
+
+### 🚀 Instructions pour lancer le code 
+
+   pip install torch torchvision tensorboard
+   python train_cnn.py --batch_size 64 --epochs 20 
+   tensorboard --logdir=runs
+
+
