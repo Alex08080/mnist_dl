@@ -170,7 +170,7 @@ Ce dépôt contient les premières étapes d’un projet de classification d’i
 - Visualisation des filtres convolutifs (poids des couches conv) pour comprendre ce que le réseau apprend  
 - Visualisation des feature maps (activations) après certaines couches convolutionnelles pour observer la détection des caractéristiques
 
-## 💻 Arguments de la CLI `train_cnn.py`
+## 💻 Arguments de la CLI `train.py`
 
 | Argument             | Type      | Description |
 |----------------------|-----------|-------------|
