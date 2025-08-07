@@ -170,6 +170,13 @@ Ce dépôt contient les premières étapes d’un projet de classification d’i
 - Visualisation des filtres convolutifs (poids des couches conv) pour comprendre ce que le réseau apprend  
 - Visualisation des feature maps (activations) après certaines couches convolutionnelles pour observer la détection des caractéristiques
 
+### 🧪 Script de Prédiction `predict.py` 
+- Script permettant de charger une image externe (`.png`) et prédire la classe avec le modèle entraîné
+- Supporte :
+  - Prétraitement automatique de l’image (grayscale, resize, normalisation)
+  - Chargement d’un modèle `.pth`
+  - Affichage de la prédiction dans la console
+
 ## 💻 Arguments de la CLI `train.py`
 
 | Argument             | Type      | Description |
