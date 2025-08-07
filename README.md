@@ -140,4 +140,7 @@ Ce dépôt contient les premières étapes d’un projet de classification d’i
 - Sauvegarde automatique des métriques (`loss`, `accuracy`) dans des fichiers `.pkl`.
 - Comparaison visuelle via des courbes matplotlib.
 - Export des figures sous forme d'images `.png`.
+<<<<<<< HEAD
 
+=======
+>>>>>>> 51888dd (Jour 6)

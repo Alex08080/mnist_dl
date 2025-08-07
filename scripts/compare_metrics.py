@@ -25,7 +25,7 @@ def plot_loss_and_accuracy():
 #  Courbe d'accuracy
     plt.subplot(1, 2, 2)
     for opti, color in zip(optimizers, colors):
-        data = load_metrics(f"metrics_{opti.lower()}.pkl")
+        data = load_metrics(f"metrics/metrics_{opti.lower()}.pkl")
         plt.plot(data["accuracy"], label=f"{opti}", color=color)
     plt.title("Comparaison des précisions (accuracy)")
     plt.xlabel("Epoch")
