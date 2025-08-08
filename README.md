@@ -195,4 +195,15 @@ Ce dépôt contient les premières étapes d’un projet de classification d’i
    python train_cnn.py --batch_size 64 --epochs 20 
    tensorboard --logdir=runs
 
+## Jour 7 Finalisation
+
+### 🧪 Expérimentations réalisées 
+- Restructuration du réseaux et affinage du modèle
+
+
+### 🗃️ Organisation du code 
+- Modification interne de neural.py
+- Visualtion de la matrice de confusion et des erreurs les plus fréquentes
+-  Ajouts d'arguments
+
 
