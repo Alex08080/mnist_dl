@@ -10,6 +10,8 @@ from torchvision import transforms
 import argparse
 import time
 from torch.utils.tensorboard import SummaryWriter
+from sklearn.metrics import confusion_matrix
+import numpy as np
 start = time.time()
 
 
@@ -22,6 +24,10 @@ parser.add_argument("--epochs", type=int, default=15)
 parser.add_argument("--batch-size", type=int, default=64)
 parser.add_argument("--save_metrics", type=int, default=0)
 parser.add_argument("--save_model", type=int, default=0)
+parser.add_argument("--plot_confusion", type=int, default=0)
+parser.add_argument("--lr", type=float, default=0.01)
+
+
 args = parser.parse_args()
 
 
@@ -35,7 +41,7 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print(f"Utilisation du device : {device}")
 
 
-model = NeuralNet.train_model(args.optimizer,loader, train_loader,test_loader, args.epochs, args.save_model, args.save_metrics,device)
+model = NeuralNet.train_model(loader,device, args)
 end = time.time()
 print(f"⏱ Temps total : {end - start:.2f} secondes")
 

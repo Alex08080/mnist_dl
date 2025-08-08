@@ -2,10 +2,14 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torch
 import matplotlib.pyplot as plt
-import numpy
+import numpy as np
 import torch.optim as optim
 import pickle
 from torch.utils.tensorboard import SummaryWriter
+import warnings
+from sklearn.metrics import confusion_matrix
+import seaborn as sns
+
 
 class NeuralNet(nn.Module) :
     def __init__(self):
@@ -17,12 +21,13 @@ class NeuralNet(nn.Module) :
         self.bn2 = nn.BatchNorm2d(50)
         self.conv3 = nn.Conv2d(50, 100, kernel_size=3, padding=1) # 50 entrées 100 sorties
         self.bn3 = nn.BatchNorm2d(100)
-        self.fc1 = nn.Linear(100 * 2 * 2, 128)  # à ajuster selon taille après conv+pool
-        self.fc2 = nn.Linear(128, 10)
+        self.fc1 = nn.Linear(100 * 2 * 2, 256)
+        self.fc2 = nn.Linear(256, 10)  # à ajuster selon taille après conv+pool
         self.loss_history = []
         self.accuracy_history = []
-        self.dropout = nn.Dropout(p=0.3)
-
+        self.dropout = nn.Dropout(p=0.4)
+        self.cm = np.zeros((10,10), dtype=int)
+ 
     def forward(self, x):
             x = self.pool(F.relu(self.bn1(self.conv1(x))))
             x = self.pool(F.relu(self.bn2(self.conv2(x))))
@@ -77,10 +82,34 @@ class NeuralNet(nn.Module) :
         plt.tight_layout()
         plt.show()
 
+    def confusing_matrix(self, dataloader, device):
+        self.eval()
+        self.cm = np.zeros((10, 10), dtype=int)
+        with torch.no_grad():
+            for x_batch, y_batch in dataloader:
+                x_batch, y_batch = x_batch.to(device), y_batch.to(device)
+                y_pred = self(x_batch)
+                predicted = y_pred.argmax(dim=1)
+                for t, p in zip(y_batch, predicted):
+                    self.cm[t.item()][p.item()] += 1
+    
+    def plot_confusion_matrix(self):
+        plt.figure(figsize=(8,6))
+        #cm_normalized = self.cm.astype('float') / self.cm.sum(axis=1)[:, np.newaxis]
+        #sns.heatmap(cm_normalized, annot=True, fmt=".2f", cmap="Blues")
+        sns.heatmap(self.cm, annot=True, fmt='d', cmap='Blues',xticklabels=range(10), yticklabels=range(10))
+        plt.xlabel("Prédiction")
+        plt.ylabel("Vérité terrain")
+        plt.show()
+        accuracy_per_class = self.cm.diagonal() / self.cm.sum(axis=1)
+        for i, acc in enumerate(accuracy_per_class):
+            print(f"Chiffre {i} - Taux de bonne prédiction : {acc*100:.2f}%")
+
     def save(self, path):
         torch.save(self.state_dict(), path)
 
     def load(self, path):
+        warnings.filterwarnings("ignore", category=FutureWarning, message="You are using `torch.load` with `weights_only=False`")
         self.load_state_dict(torch.load(path))
         self.eval()
     
@@ -119,45 +148,48 @@ class NeuralNet(nn.Module) :
         self.accuracy_history.append(self.accuracy(train_loader, device))
 
 #Entrainement total
-    def train_model(optimizer_name,loader, train_loader, test_loader, epochs, save_model, save_metrics,device):
+    def train_model(loader, device, args):
 
         model = NeuralNet().to(device)
         #Creation d'un writer pour ecrire dans le tensorboard
         writer = SummaryWriter(log_dir="../runs/mnist_experiment")
 
-        if optimizer_name == "sgd":
-            optimizer = optim.SGD(model.parameters(), lr=0.01, momentum=0.9)
-            model_path = "../models/model_sgd_batchnorm_dropout.pth"
-            metrics_path = "../metrics/metrics_sgd_batchnorm_dropout.pkl"
-        elif optimizer_name == "adam":
-            optimizer = optim.Adam(model.parameters(), lr=0.0001)
+        if args.optimizer == "sgd":
+            optimizer = optim.SGD(model.parameters(), lr=args.lr, momentum=0.9)
+            model_path = "../models/model_sgd_final.pth"
+            metrics_path = "../metrics/metrics_sgd_final.pkl"
+        elif args.optimizer == "adam":
+            optimizer = optim.Adam(model.parameters(), lr=args.lr)
             model_path = "../models/model_adam_batchnorm_dropout.pth"
             metrics_path = "../metrics/metrics_adam_batchnorm_dropout.pkl"
-        elif optimizer_name == "rmsprop":
-            optimizer = optim.RMSprop(model.parameters(), lr=0.0001)
+        elif args.optimizer == "rmsprop":
+            optimizer = optim.RMSprop(model.parameters(), lr=args.lr)
             model_path = "../models/model_rms_batchnorm_dropout.pth"
             metrics_path = "../metrics/metrics_rms.pkl"
         else:
-            raise ValueError(f"Optimizer {optimizer_name} not supported")
+            raise ValueError(f"Optimizer {args.optimizer} not supported")
 
-        for epoch in range(epochs):
-            model.train_epoch(train_loader, optimizer, loader, epoch, device,writer)
-            accuracy = model.accuracy(train_loader,device)
+        for epoch in range(args.epochs):
+            model.train_epoch(loader.train_dataloader(), optimizer, loader, epoch, device,writer)
+            accuracy = model.accuracy(loader.train_dataloader(),device)
             writer.add_scalar("Accuracy/train", accuracy, epoch)
-            val_loss = model.evaluate_loss(test_loader, device)
-            val_acc = model.accuracy(test_loader, device)
+            val_loss = model.evaluate_loss(loader.test_dataloader(), device)
+            val_acc = model.accuracy(loader.test_dataloader(), device)
 
             writer.add_scalar("Loss/test", val_loss, epoch)
             writer.add_scalar("Accuracy/test", val_acc, epoch)
             print(f"Epoch {epoch + 1} - Accuracy: {accuracy:.2f}%")
-            if accuracy >= 99.3:
+            if val_acc >= 99.6:
                 print(f"Converged at epoch {epoch + 1}")
                 break
+        if args.plot_confusion:
+            model.confusing_matrix(loader.test_dataloader(), device)
+            model.plot_confusion_matrix()
 
-        if save_model:
+        if args.save_model:
             model.save(model_path)
 
-        if save_metrics:
+        if args.save_metrics:
             with open(metrics_path, "wb") as f:
                 pickle.dump({
                     "loss": model.loss_history,
