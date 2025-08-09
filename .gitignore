@@ -23,3 +23,4 @@ Thumbs.db
 
 #Fichiers de modèles sauvegardés
 *.pth
+events.out*
