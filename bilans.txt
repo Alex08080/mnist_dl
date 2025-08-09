@@ -1,0 +1,7 @@
+Bilan de la "semaine 1"
+
+Conceptx assez complexes à prendre en main j'ai juste encore du mal à bien visualer ce qu'il se passait meme si j'ai compris les principes et le fonctionnement. Projet très formateur pour l'instant par
+rapport au deep learning, il faudrait que j'ai plus de précision du côté mathématiques du projet parce que typiquement le backward ce n'est pas rien et tout les calculs des gradients.
+Sinon très intéressant j'avais pas beaucoup de bases en python juste en code en général, le python est trés facile à apprendre et surtout très pratique pour la factorisation du code c'est fou comme la syntaxe 
+fig, axes ou on definie sur la meme ligne 2 elements d'une structure pour q'ils les prennent en compte hâte de voir la suite
+
