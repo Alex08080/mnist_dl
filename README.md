@@ -195,7 +195,7 @@ Ce dépôt contient les premières étapes d’un projet de classification d’i
    python train_cnn.py --batch_size 64 --epochs 20 
    tensorboard --logdir=runs
 
-## Jour 7 Finalisation
+## Jour 7 Finalisation du modèle 
 
 ### 🧪 Expérimentations réalisées 
 - Restructuration du réseaux et affinage du modèle
@@ -205,5 +205,32 @@ Ce dépôt contient les premières étapes d’un projet de classification d’i
 - Modification interne de neural.py
 - Visualtion de la matrice de confusion et des erreurs les plus fréquentes
 -  Ajouts d'arguments
+
+## 🚀 Jour 8 : Finalisation projet MNIST — Organisation, visualisation et prédictions externes
+
+### 🗂 Restructuration du projet  
+- Organisation des fichiers et dossiers pour gérer proprement les multiples modèles et leurs logs TensorBoard.  
+- Mise en place d’une gestion claire des optimizers et du scheduler uniquement pour SGD.
+
+### 🔄 Entraînement et gestion des modèles  
+- Entraînement complet de 7 modèles variés (optimizers, BatchNorm, Dropout, Data Augmentation).  
+- Implémentation du scheduler StepLR pour SGD, désactivation pour Adam et RMSProp.  
+
+### 📊 Visualisation avancée avec TensorBoard  
+- Configuration des logs pour différencier les courbes des différents modèles (dossiers spécifiques).  
+- Résolution du problème d’affichage avec couleurs identiques dans TensorBoard.
+
+### 📓 Notebook d’analyse enrichi  
+- Ajout d’un tableau récapitulatif des performances, avec la meilleure accuracy atteinte par modèle.  
+- Affichage des prédictions sur images du test set, avec sélection aléatoire à chaque exécution.  
+- Affichage de la matrice de confusion et analyse des erreurs typiques (chiffres souvent confondus).
+
+### ✍️ Prédiction sur images manuscrites externes  
+- Implémentation d’un pipeline de prétraitement (grayscale, resize, inversion, normalisation) pour images personnalisées.  
+- Ajout d’exemples d’images “faites main” dans le notebook, avec affichage de la prédiction du modèle.  
+
+---
+
+*Projet prêt pour une présentation complète, avec code propre, résultats exploitables et démonstrations concrètes !*
 
 
