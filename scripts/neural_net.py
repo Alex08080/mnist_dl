@@ -8,6 +8,7 @@ import pickle
 from torch.utils.tensorboard import SummaryWriter
 import warnings
 from sklearn.metrics import confusion_matrix
+from datetime import datetime
 import seaborn as sns
 
 
@@ -23,8 +24,10 @@ class NeuralNet(nn.Module) :
         self.bn3 = nn.BatchNorm2d(100)
         self.fc1 = nn.Linear(100 * 2 * 2, 256)
         self.fc2 = nn.Linear(256, 10)  # à ajuster selon taille après conv+pool
-        self.loss_history = []
-        self.accuracy_history = []
+        self.loss_train_history = []
+        self.accuracy_train_history = []
+        self.loss_test_history = []
+        self.accuracy_test_history = []
         self.dropout = nn.Dropout(p=0.4)
         self.cm = np.zeros((10,10), dtype=int)
  
@@ -144,44 +147,60 @@ class NeuralNet(nn.Module) :
             total_loss+= loss.item()
         writer.add_scalar("Loss/train", total_loss/len(train_loader), epoch)
         print(f"Epoch {epoch+1}, Loss moyenne : {total_loss/len(train_loader):.4f}")
-        self.loss_history.append(total_loss/len(train_loader))
-        self.accuracy_history.append(self.accuracy(train_loader, device))
+        self.loss_train_history.append(total_loss/len(train_loader))
+        self.accuracy_train_history.append(self.accuracy(train_loader, device))
 
 #Entrainement total
     def train_model(loader, device, args):
 
         model = NeuralNet().to(device)
         #Creation d'un writer pour ecrire dans le tensorboard
-        writer = SummaryWriter(log_dir="../runs/mnist_experiment")
+        log_dir = f"../runs/mnist_experiment/best_model_compare/{args.optimizer}_best"
+        writer = SummaryWriter(log_dir=log_dir)
+
+        
 
         if args.optimizer == "sgd":
             optimizer = optim.SGD(model.parameters(), lr=args.lr, momentum=0.9)
-            model_path = "../models/model_sgd_final.pth"
-            metrics_path = "../metrics/metrics_sgd_final.pkl"
+            scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=5, gamma=0.1)
+            model_path = "../models/model_sgd_best.pth"
+            metrics_path = "../outputs/metrics/metrics_sgd_best.pkl"
         elif args.optimizer == "adam":
             optimizer = optim.Adam(model.parameters(), lr=args.lr)
-            model_path = "../models/model_adam_batchnorm_dropout.pth"
-            metrics_path = "../metrics/metrics_adam_batchnorm_dropout.pkl"
+            scheduler = None
+            model_path = "../models/model_adam_base.pth"
+            metrics_path = "../outputs/metrics/metrics_adam_base.pkl"
         elif args.optimizer == "rmsprop":
             optimizer = optim.RMSprop(model.parameters(), lr=args.lr)
-            model_path = "../models/model_rms_batchnorm_dropout.pth"
-            metrics_path = "../metrics/metrics_rms.pkl"
+            scheduler = None 
+            model_path = "../models/model_rms_base.pth"
+            metrics_path = "../outputs/metrics/metrics_rms_base.pkl"
         else:
             raise ValueError(f"Optimizer {args.optimizer} not supported")
+        
+        
 
         for epoch in range(args.epochs):
-            model.train_epoch(loader.train_dataloader(), optimizer, loader, epoch, device,writer)
-            accuracy = model.accuracy(loader.train_dataloader(),device)
+            model.train_epoch(loader.train_dataloader(), optimizer, loader, epoch, device, writer)
+            accuracy = model.accuracy(loader.train_dataloader(), device)
             writer.add_scalar("Accuracy/train", accuracy, epoch)
             val_loss = model.evaluate_loss(loader.test_dataloader(), device)
             val_acc = model.accuracy(loader.test_dataloader(), device)
+            model.loss_test_history.append(val_loss)
+            model.accuracy_test_history.append(val_acc)
+
+
 
             writer.add_scalar("Loss/test", val_loss, epoch)
             writer.add_scalar("Accuracy/test", val_acc, epoch)
             print(f"Epoch {epoch + 1} - Accuracy: {accuracy:.2f}%")
-            if val_acc >= 99.6:
-                print(f"Converged at epoch {epoch + 1}")
-                break
+            #if val_acc >= 99.6:
+            #    print(f"Converged at epoch {epoch + 1}")
+            #    break
+
+            if scheduler is not None:
+                scheduler.step()
+
         if args.plot_confusion:
             model.confusing_matrix(loader.test_dataloader(), device)
             model.plot_confusion_matrix()
@@ -192,9 +211,12 @@ class NeuralNet(nn.Module) :
         if args.save_metrics:
             with open(metrics_path, "wb") as f:
                 pickle.dump({
-                    "loss": model.loss_history,
-                    "accuracy": model.accuracy_history
+                    "loss_train": model.loss_train_history,
+                    "accuracy_train": model.accuracy_train_history,
+                    "loss_test" : model.loss_test_history,
+                    "accuracy_test" : model.accuracy_test_history
                 }, f)
+
         writer.close()
         return model
 

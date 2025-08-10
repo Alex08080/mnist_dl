@@ -20,7 +20,7 @@ def test_transform():
     return test_transform
 
 class MNISTDataLoader:
-    def __init__(self, data_dir="data", batch_size=128):
+    def __init__(self, data_dir="data", batch_size=64):
         self.data_dir = data_dir
         self.batch_size = batch_size
 

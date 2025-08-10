@@ -1,17 +1,8 @@
 from mnist_dataloader import MNISTDataLoader
 from neural_net import NeuralNet
-import matplotlib.pyplot as plt # type: ignore
-import torch.nn as nn
-import torch.optim as optim
 import torch
-import pickle
-import compare_metrics as cmp_metrics
-from torchvision import transforms
 import argparse
 import time
-from torch.utils.tensorboard import SummaryWriter
-from sklearn.metrics import confusion_matrix
-import numpy as np
 start = time.time()
 
 
@@ -20,7 +11,7 @@ start = time.time()
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--optimizer", type=str, default="sgd", choices=["sgd", "adam", "rmsprop"])
-parser.add_argument("--epochs", type=int, default=15)
+parser.add_argument("--epochs", type=int, default=20)
 parser.add_argument("--save_metrics", type=int, default=0)
 parser.add_argument("--save_model", type=int, default=0)
 parser.add_argument("--plot_confusion", type=int, default=0)
